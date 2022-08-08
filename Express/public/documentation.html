@@ -4,9 +4,236 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentation</title>
+
+    <link rel="stylesheet" href="public/css/styles.css">
+
+<style>table, th, td {
+      padding: 10px;
+      border: 1px solid black; 
+      border-collapse: collapse;
+}
+</style>
+
+    <title>myFlix Documentation</title>
 </head>
 <body>
-    <p>Documentation</p>
+
+  <h1>myFlix Documentation</h1>
+
+  <h4>Introduction</h4>
+  <p>
+    This is an REST API for application called myFlix that interacts with a database and stores data about different movies. <br>
+    You will be able to Sing up,update your personal information,and create a list of your favorite movies.
+  </p>
+
+<table>
+  <tr>
+    <th>Business Logic</th>
+    <th>URL</th> 
+    <th>HTTP Method</th>
+    <th>Request body data format</th> 
+    <th>Response body data format</th>
+  </tr>
+
+  <tr>
+    <td>Return a list of ALL movies to the user</td>
+    <td>/movies</td> 
+    <td>GET</td>
+    <td></td>
+    <td><p>An array with list of movies. Each object contains data about movies. Every key is described with value of a string.</p>
+        <h4>Example:</h4>
+        <code class="code">
+          [<br>
+            {<br>
+              "Title":"Hot Rod",<br>
+              "Description":"The film stars Andy Samberg as amateur stuntman Rod Kimble, whose stepfather, Frank (Ian McShane), continuously mocks and disrespects him. When Frank becomes ill, Rod raises money for his heart operation by executing his largest stunt yet.", <br>
+              "Genre": { <br>
+                "Name":"Action/Comedy",<br>
+                "Description":"A film or television programme which blends comedy with a lively plot and fast-paced action." <br>
+              }, <br>
+              "Director": { <br>
+                "Name":"Akiva Schaffer", <br>
+                "Bio":"Akiva Schaffer was born on December 1, 1977 in Berkeley, California, USA. He is a writer and director, known for Popstar: Never Stop Never Stopping (2016), Saturday Night Live (1975) and The Lego Movie (2014). He has been married to Liz Cackowski since 2010. They have two children." <br>
+              }, <br>
+              "ImageURL":"https://www.pastposters.com/cw3/assets/product_full/R/hot-rod-cinema-quad-movie-poster-(3).jpg", <br>
+              "Year":"2007" <br>
+            },
+        </code>
+    <p><strong>Response status codes:</strong></p>
+        <p>200: OK</p>
+        <p>500: Internal server error- Something went wrong</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td>Return data (description, genre, director, image URL, whether it's featured or not) about a
+        single movie by title to the user</td>
+    <td>/movies/genre/:genreName</td> 
+    <td>GET</td>
+    <td></td>
+    <td><p>An object containing data about specific movie. Every key is described with value of a string.</p>
+        <h4>Example:</h4>
+        <code class="code">
+          { <br>
+            "Title":"Zoolander", <br>
+            "Description":"At the end of his career, a clueless fashion model is brainwashed to kill the Prime Minister of Malaysia.", <br>
+            "Genre": { <br>
+              "Name":"Action/Comedy", <br>
+              "Description":"A film or television programme which blends comedy with a lively plot and fast-paced action." <br>
+            }, <br>
+            "Director": { <br>
+              "Name":"Ben Stiller", <br>
+              "Bio":"Benjamin Edward Meara Stiller (born November 30, 1965) is an American actor, comedian, producer, director, and screenwriter. He is the son of the comedians and actors Jerry Stiller and Anne Meara." <br>
+            }, <br>
+            "ImageURL":"https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQ28jpUvklqVl9xk9sHzTn2WnYQN026nMZLYpeZsHGKxDCrQDRi", <br>
+            "Year":"2001" <br>
+          }, <br>
+        </code>
+    <p><strong>Response status codes:</strong></p>
+        <p>201: OK- JSON object</p>
+        <p>500: Internal server error- Something went wrong</p></td> 
+  </tr>
+
+  <tr>
+    <td>Return data about a genre (description) by name/title (e.g., “Thriller”)</td> 
+    <td>/movies/:title</td>
+    <td>GET</td>
+    <td></td> 
+    <td>    <p>An object containing data about specific genre. Every key is described with value of a string.</p>
+        <h4>Example:</h4>
+        <code class="code">
+          { <br>
+            "Name":"Comedy",<br>
+            "Description":"Comedies are light-hearted dramas, crafted to amuse, entertain, and provoke enjoyment."<br>
+          },
+        </code>
+    <p><strong>Response status codes:</strong></p>
+        <p>200: OK- JSON object</p>
+        <p>400: Bad request- Genre not found!</p>
+        <p>500: Internal server error- Something went wrong</p>
+</td>
+  </tr>
+
+  <tr>
+    <td>Return data about a director (bio, birth year, death year) by name</td>
+    <td>/movies/directors/:directorName</td> 
+    <td>GET</td>
+    <td></td>
+    <td><p>An object containing data about specific director. Every key is described with value of a string.</p>
+      <h4>Example:</h4>
+      <code class="code">
+        {<br>
+          "Name":"Ben Stiller", <br>
+          "Bio":"Benjamin Edward Meara Stiller (born November 30, 1965) is an American actor, comedian, producer, director, and screenwriter. He is the son of the comedians and actors Jerry Stiller and Anne Meara." <br>
+        },
+      </code>
+  <p><strong>Response status codes:</strong></p>
+      <p>200: OK- JSON object</p>
+      <p>400: Bad request- Director not found!</p>
+      <p>500: Internal server error- Something went wrong</p></td> 
+  </tr>
+
+  <tr>
+    <td>Allow new users to register</td> 
+    <td>/users</td>
+    <td>POST</td>
+    <td><p>JSON object with data about user. <span class="required">Required</span>: "name"</p>
+    <h4>Example:</h4>
+    <code class="code">
+        {<br>
+              "Name": "Mary",<br>
+        }
+    </code></td> 
+    <td><p>JSON object with data about user which includes automatic generated ID</p>
+        <h4>Example:</h4>
+          <code class="code">
+            {<br>
+              "Name": "Mary",<br>
+              "Email": "mary@email.com," <br>
+              "Password": "password123," <br>
+              "favoriteMovies": [],<br>
+              "id": "8a757bb9-2eec-46bf-86f0-443ff742cf3a"<br>
+            }
+          </code>
+    <p><strong>Response status codes:</strong></p>
+        <p>201: Created- New user has been added</p>
+        <p>400: Bad request- User already exists</p></td>
+  </tr>
+
+  <tr>
+    <td>Allow users to update their user info (username, password, email, date of birth) by id</td> 
+    <td>/users/:id</td>
+    <td>PUT</td>
+    <td></td> 
+    <td><p>JSON object with data about user which includes,"id" with integer value, "Name", and "favorite movies" with an array.</p>
+        <h4>Example:</h4>
+        <code class="code">
+          {<br>
+            "Name": "Melissa",<br>
+            "Email": "mary@email.com", <br>
+            "Password": "password123", <br>
+            "favoriteMovies": [],<br>
+            "id": 8a757bb9-2eec-46bf-86f0-443ff742cf3a,<br>
+          }
+        </code>
+    <p><strong>Response status codes:</strong></p>
+        <p>200: OK- New user has been added</p>
+        <p>500: Internal server error- Something went wrong</p></td>
+  </tr>
+
+  <tr>
+    <td>Allow users to add a movie to their list of favorites</td> 
+    <td>/users/:id/:movieTitle</td>
+    <td>POST</td>
+    <td></td> 
+    <td><p>JSON object with updated list of movies in Favorite Movies array.</p>
+        <code class="code">
+          {
+              Hot Rod has been added to Melissa's array
+          }
+        </code>
+    <p><strong>Response status codes:</strong></p>
+        <p>200: OK- Updated users array list</p>
+        <p>500: Internal server error- Something went wrong</p>
+  </div></td>
+  </tr>
+
+  <tr>
+    <td>Allow users to remove a movie from their list of favorites</td> 
+    <td>/users/:id/:title</td>
+    <td>DELETE</td>
+    <td></td> 
+    <td><p>A message indicating the movie has been added to the user's array.</p>
+        <h4>Example:</h4>
+        <code class="code">
+          {
+            Hot Rod has been removed from Melissa's array
+          }
+        </code>
+    <p><strong>Response status codes:</strong></p>
+        <p>200: OK- Movie has been removed from users list!</p>
+        <p>500: Internal server error- Something went wrong</p></td>
+  </tr>
+
+  <tr>
+    <td>Allow existing users to deregister</td> 
+    <td>/users/:id</td>
+    <td>DELETE</td>
+    <td></td> 
+    <td><p><strong>Expected response data:</strong> A confirmation message that users account has been deleted.</p>
+        <h4>Example:</h4>
+        <code class="code">
+          {
+            "user 1 has been deleted"
+          }
+        </code>
+    <p><strong>Response status codes:</strong></p>
+    <div class="status_codes">
+        <p>200: OK- Users account has been deleted</p>
+        <p>400: Bad request- Users name was not found</p>
+        <p>500: Internal server error- Something went wrong</p></td>
+  </tr>
+</table>
+
 </body>
 </html>
