@@ -24,8 +24,17 @@ let userSchema = mongoose.Schema({
   FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
 });
 
+// let genreSchema = mongoose.Schema({
+// });
+
+// let directorSchema = mongoose.Schema({
+// });
+
 let Movie = mongoose.model('Movie', movieSchema);
 let User = mongoose.model('User', userSchema);
+
+// let Genre = mongoose.model('Genre', genreSchema);
+// let Director = mongoose.Schema('Director', directorSchema);
 
 module.exports.Movie = Movie;
 module.exports.User = User;

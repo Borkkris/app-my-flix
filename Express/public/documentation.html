@@ -40,160 +40,179 @@
     <td>/movies</td> 
     <td>GET</td>
     <td></td>
-    <td><p>An array with list of movies. Each object contains data about movies. Every key is described with value of a string.</p>
+    <td><p>JSON Object with list of movies. Each object contains data about movies. Every key is described with value of a string.</p>
         <h4>Example:</h4>
         <code class="code">
           [<br>
-            {<br>
-              "Title":"Hot Rod",<br>
-              "Description":"The film stars Andy Samberg as amateur stuntman Rod Kimble, whose stepfather, Frank (Ian McShane), continuously mocks and disrespects him. When Frank becomes ill, Rod raises money for his heart operation by executing his largest stunt yet.", <br>
-              "Genre": { <br>
-                "Name":"Action/Comedy",<br>
-                "Description":"A film or television programme which blends comedy with a lively plot and fast-paced action." <br>
-              }, <br>
-              "Director": { <br>
-                "Name":"Akiva Schaffer", <br>
-                "Bio":"Akiva Schaffer was born on December 1, 1977 in Berkeley, California, USA. He is a writer and director, known for Popstar: Never Stop Never Stopping (2016), Saturday Night Live (1975) and The Lego Movie (2014). He has been married to Liz Cackowski since 2010. They have two children." <br>
-              }, <br>
-              "ImageURL":"https://www.pastposters.com/cw3/assets/product_full/R/hot-rod-cinema-quad-movie-poster-(3).jpg", <br>
-              "Year":"2007" <br>
-            },
+    {<br>
+        "Genre": {<br>
+            "Name": "Thriller",<br>
+            "Description": "Thriller film, also known as suspense film or suspense thriller, is a broad film genre that involves excitement and suspense in the audience."<br>
+        },<br>
+        "Director": {<br>
+            "Name": "Jonathan Demme",<br>
+            "Bio": "Robert Jonathan Demme was an American director, producer, and screenwriter.",<br>
+            "Birth": "1944",<br>
+            "Death": "2017"<br>
+        },<br>
+        "Actors": [],<br>
+        "_id": "62fb6c1ae47bfb157461b3e9",<br>
+        "Title": "Silence of the Lambs",<br>
+        "Description": "A young FBI cadet must receive the help of an incarcerated and manipulative cannibal killer to help catch another serial killer!.",<br>
+        "ImagePath": "silenceofthelambs.png",<br>
+        "Featured": true<br>
+    },<br>
+    .<br>
+    .<br>
+    . <br>
+    ]<br>
         </code>
     <p><strong>Response status codes:</strong></p>
-        <p>200: OK</p>
         <p>500: Internal server error- Something went wrong</p>
     </td>
   </tr>
 
   <tr>
-    <td>Return data (description, genre, director, image URL, whether it's featured or not) about a
-        single movie by title to the user</td>
+    <td>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user</td>
+    <td>/movies/:Title</td> 
+    <td>GET</td>
+    <td></td>
+    <td><p>JSON object with informations about one specific movie.</p>
+        <h4>Example:</h4>
+        <code class="code">
+          {<br>
+            "Genre": {<br>
+            "Name": "Thriller",<br>
+            "Description": "Thriller film, also known as suspense film or suspense thriller, is a broad film genre that involves excitement and suspense in the audience."<br>
+          },<br>
+          "Director": {<br>
+            "Name": "Todd Phillips",<br>
+            "Bio": "Todd Phillips is an American filmmaker and occasional actor. Phillips began his career in 1993 and directed films in the 2000s such as Road Trip, Old School, Starsky & Hutch, and School for Scoundrels. He came to wider prominence in the early 2010s for directing The Hangover film series. In 2019, he co-wrote and directed the psychological thriller film Joker, based on the DC Comics character of the same name, which premiered at the 76th Venice International Film Festival where it received the top prize, the Golden Lion. Joker went on to earn Phillips three Academy Award nominations for Best Picture, Best Director, and Best Adapted Screenplay, with his co-writer Scott Silver.",<br>
+            "Birth": "1970",<br>
+            "Death": ""<br>
+          },<br>
+          "Actors": [],<br>
+          "_id": "62fbc84a0b9b20397a3e7478",<br>
+          "Title": "Joker",<br>
+          "Description": "A mentally troubled stand-up comedian embarks on a downward spiral that leads to the creation of an iconic villain. Arthur Fleck works as a clown and is an aspiring stand-up comic. He has mental health issues, part of which involves uncontrollable laughter.",<br>
+          "ImagePath": "https://www.imdb.com/title/tt7286456/mediaviewer/rm1792774913/?ref_=ext_shr_lnk",<br>
+          "Featured": true<br>
+          }<br>
+        </code>
+    <p><strong>Response status codes:</strong></p>
+        <p>500: Internal server error- Something went wrong</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td>Return data about a genre (description) by name/title (e.g., “Thriller”)</td>
     <td>/movies/genre/:genreName</td> 
     <td>GET</td>
     <td></td>
-    <td><p>An object containing data about specific movie. Every key is described with value of a string.</p>
+    <td><p>An object containing data about specific Genre. Every key is described with value of a string.</p>
         <h4>Example:</h4>
         <code class="code">
-          { <br>
-            "Title":"Zoolander", <br>
-            "Description":"At the end of his career, a clueless fashion model is brainwashed to kill the Prime Minister of Malaysia.", <br>
-            "Genre": { <br>
-              "Name":"Action/Comedy", <br>
-              "Description":"A film or television programme which blends comedy with a lively plot and fast-paced action." <br>
-            }, <br>
-            "Director": { <br>
-              "Name":"Ben Stiller", <br>
-              "Bio":"Benjamin Edward Meara Stiller (born November 30, 1965) is an American actor, comedian, producer, director, and screenwriter. He is the son of the comedians and actors Jerry Stiller and Anne Meara." <br>
-            }, <br>
-            "ImageURL":"https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQ28jpUvklqVl9xk9sHzTn2WnYQN026nMZLYpeZsHGKxDCrQDRi", <br>
-            "Year":"2001" <br>
-          }, <br>
+        {<br>
+        "Name": "Thriller",<br>
+        "Description": "Thriller film, also known as suspense film or suspense thriller, is a broad film genre that involves excitement and suspense in the audience."<br>
+        } <br>
         </code>
     <p><strong>Response status codes:</strong></p>
-        <p>201: OK- JSON object</p>
         <p>500: Internal server error- Something went wrong</p></td> 
   </tr>
 
   <tr>
-    <td>Return data about a genre (description) by name/title (e.g., “Thriller”)</td> 
-    <td>/movies/:title</td>
+    <td>Return data about a director (bio, birth year, death year) by name</td> 
+    <td>/movies/directors/:directorName</td>
     <td>GET</td>
     <td></td> 
-    <td>    <p>An object containing data about specific genre. Every key is described with value of a string.</p>
+    <td>    <p>An object containing data about specific Director. Every key is described with value of a string.</p>
         <h4>Example:</h4>
         <code class="code">
-          { <br>
-            "Name":"Comedy",<br>
-            "Description":"Comedies are light-hearted dramas, crafted to amuse, entertain, and provoke enjoyment."<br>
-          },
+          {<br>
+            "Name": "Ang Lee",<br>
+            "Bio": "Ang Lee is a director of many famous movies.",<br>
+            "Birth": "1954",<br>
+            "Death": ""<br>
+          }<br>
         </code>
     <p><strong>Response status codes:</strong></p>
-        <p>200: OK- JSON object</p>
-        <p>400: Bad request- Genre not found!</p>
         <p>500: Internal server error- Something went wrong</p>
 </td>
   </tr>
 
   <tr>
-    <td>Return data about a director (bio, birth year, death year) by name</td>
-    <td>/movies/directors/:directorName</td> 
-    <td>GET</td>
-    <td></td>
+    <td>Allow new users to register </td>
+    <td>/users</td> 
+    <td>POST</td>
+    <td><p>JSON object with data about user. <span class="required">Required</span>: "Username"</p>
+    <h4>Example:</h4>
+    <code class="code">
+      {<br>
+        "Username": "Mary",<br>
+        "Password": "test1234",<br>
+        "Email": "Mary@gmail.com",<br>
+        "Birthday": "01/01/1990"<br>
+      }<br>
+    </code></td> 
     <td><p>An object containing data about specific director. Every key is described with value of a string.</p>
       <h4>Example:</h4>
       <code class="code">
         {<br>
-          "Name":"Ben Stiller", <br>
-          "Bio":"Benjamin Edward Meara Stiller (born November 30, 1965) is an American actor, comedian, producer, director, and screenwriter. He is the son of the comedians and actors Jerry Stiller and Anne Meara." <br>
-        },
+          "Username": "Mary",<br>
+          "Password": "test1234",<br>
+          "Email": "Mary@gmail.com",<br>
+          "Birthday": "1989-12-31T23:00:00.000Z",<br>
+          "FavoriteMovies": [],<br>
+          "_id": "62fd0baf1b328e6f719f03a8",<br>
+          "__v": 0<br>
+        }<br>
       </code>
   <p><strong>Response status codes:</strong></p>
-      <p>200: OK- JSON object</p>
-      <p>400: Bad request- Director not found!</p>
+      <p>201: OK- JSON object</p>
       <p>500: Internal server error- Something went wrong</p></td> 
   </tr>
 
   <tr>
-    <td>Allow new users to register</td> 
-    <td>/users</td>
-    <td>POST</td>
-    <td><p>JSON object with data about user. <span class="required">Required</span>: "name"</p>
+    <td>Allow users to update their user info (username, password, email, date of birth) by Username</td> 
+    <td>/users/:Username</td>
+    <td>PUT</td>
+    <td><p>JSON object with data about user and the changed value. (i.e. Password) <span class="required">Required</span>: "Username"</p>
     <h4>Example:</h4>
     <code class="code">
-        {<br>
-              "Name": "Mary",<br>
-        }
+      {<br>
+        "Username": "Mary",<br>
+        "Password": "test1234", (changed to "1234"!)<br><br>
+        "Email": "Mary@gmail.com",<br>
+        "Birthday": "01/01/1990"<br>
+      }<br>
     </code></td> 
-    <td><p>JSON object with data about user which includes automatic generated ID</p>
-        <h4>Example:</h4>
-          <code class="code">
-            {<br>
-              "Name": "Mary",<br>
-              "Email": "mary@email.com," <br>
-              "Password": "password123," <br>
-              "favoriteMovies": [],<br>
-              "id": "8a757bb9-2eec-46bf-86f0-443ff742cf3a"<br>
-            }
-          </code>
-    <p><strong>Response status codes:</strong></p>
-        <p>201: Created- New user has been added</p>
-        <p>400: Bad request- User already exists</p></td>
-  </tr>
-
-  <tr>
-    <td>Allow users to update their user info (username, password, email, date of birth) by id</td> 
-    <td>/users/:id</td>
-    <td>PUT</td>
-    <td></td> 
-    <td><p>JSON object with data about user which includes,"id" with integer value, "Name", and "favorite movies" with an array.</p>
+    <td><p>JSON object with data about user which includes all informations and the updated value.</p>
         <h4>Example:</h4>
         <code class="code">
           {<br>
-            "Name": "Melissa",<br>
-            "Email": "mary@email.com", <br>
-            "Password": "password123", <br>
-            "favoriteMovies": [],<br>
-            "id": 8a757bb9-2eec-46bf-86f0-443ff742cf3a,<br>
-          }
+            "Username": "Mary",<br>
+            "Password": "1234", (updated Password!)<br>
+            "Email": "Mary@gmail.com",<br>
+            "Birthday": "01/01/1990"<br>
+          }<br>
         </code>
     <p><strong>Response status codes:</strong></p>
-        <p>200: OK- New user has been added</p>
         <p>500: Internal server error- Something went wrong</p></td>
   </tr>
 
   <tr>
     <td>Allow users to add a movie to their list of favorites</td> 
-    <td>/users/:id/:movieTitle</td>
+    <td>/user/:Username/movies/:movieID</td>
     <td>POST</td>
     <td></td> 
     <td><p>JSON object with updated list of movies in Favorite Movies array.</p>
         <code class="code">
-          {
-              Hot Rod has been added to Melissa's array
-          }
+          "FavoriteMovies": [<br>
+        "62fbc84a0b9b20397a3e7478"<br>
+    ],<br> (i.e. this MovieID belongs to the Movie "Joker")
         </code>
     <p><strong>Response status codes:</strong></p>
-        <p>200: OK- Updated users array list</p>
         <p>500: Internal server error- Something went wrong</p>
   </div></td>
   </tr>
@@ -203,29 +222,32 @@
     <td>/users/:id/:title</td>
     <td>DELETE</td>
     <td></td> 
-    <td><p>A message indicating the movie has been added to the user's array.</p>
+    <td><p>A JSON with users information</p>
         <h4>Example:</h4>
         <code class="code">
-          {
-            Hot Rod has been removed from Melissa's array
-          }
+          {<br>
+            "_id": "62fd0baf1b328e6f719f03a8",<br>
+            "Username": "Mary",<br>
+            "Password": "1234",<br>
+            "Email": "Mary@gmnail.com",<br>
+            "Birthday": "1989-12-31T23:00:00.000Z",<br>
+            "FavoriteMovies": [], (MovieID removed)<br>
+            "__v": 0<br>
+          }<br>
         </code>
     <p><strong>Response status codes:</strong></p>
-        <p>200: OK- Movie has been removed from users list!</p>
         <p>500: Internal server error- Something went wrong</p></td>
   </tr>
 
   <tr>
     <td>Allow existing users to deregister</td> 
-    <td>/users/:id</td>
+    <td>/users/:Username</td>
     <td>DELETE</td>
     <td></td> 
-    <td><p><strong>Expected response data:</strong> A confirmation message that users account has been deleted.</p>
+    <td><p><strong>Expected (HTML) response data:</strong> A confirmation message that users account has been deleted.</p>
         <h4>Example:</h4>
         <code class="code">
-          {
-            "user 1 has been deleted"
-          }
+            "Mary has been deleted"
         </code>
     <p><strong>Response status codes:</strong></p>
     <div class="status_codes">
