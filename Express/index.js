@@ -219,7 +219,7 @@ app.get('/movies', (req, res) => {
 
 // READ the movie by title
 app.get('/movies/:Title', (req, res) => {
-  Movies.findOneAndRemove({ Title: req.params.Title })
+  Movies.findOne({ 'Title': req.params.Title })
     .then((movie) => {
       res.json(movie);
     })
@@ -376,7 +376,7 @@ app.post('/users/:id/:movieTitle', (req, res) => {
 });
 */
 
-// DELETE remove a movie from the Array
+// DELETE remove a movie from favourites
 app.delete('/users/:Username/movies/:movieID', (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username },
     { 
