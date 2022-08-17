@@ -1,176 +1,188 @@
+const mongoose = require('mongoose');
+const Models = require('/models.js');
+//refer to the model names I defined in the “models.js” file
+const Movies = Models.Movie;
+const Users = Models.User;
+
 // To import express into the package
 const express = require('express'); //imports the express module locally so it can be used within the file
 const morgan = require('morgan');
 const bodyParser = require('body-parser')
-const uuid = require('uuid');
+// const uuid = require('uuid');
 
 const app = express(); // declares a variable that encapsulates Express’s functionality to configure my web server. This new variable is what I will use to route my HTTP requests and responses.
 
+//This allows Mongoose to connect to that database (myFlixDB) so it can perform CRUD operations on the documents it contains from within my REST API
+mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
+// //Users array
+// let users = [
+//   {
+//     id: 1,
+//     name: "Kim",
+//     favoriteMovies: [],
+//   },
+//   {
+//     id: 2,
+//     name: "Joe",
+//     favoriteMovies: ["Brokeback Mountain"],
+//   },
+// ]
+
+// //Movies array
+// let movies = [
+//   {
+//     Title: "Into the wild",
+//     Director: "Sean Penn",
+//     Actors: [
+//     "Emile Hirsch",
+//     "Vince Vaughn",
+//     "Marcia Gay Harden",
+//     "William Hurt",
+//     "Jena Malone",
+//     "Catherine Keener",
+//     "Kristen Stewart",
+//     "Hal Holbrook"
+//   ],
+//     Genre: "Drama",
+//   },
+//   {
+//     Title: "Brokeback Mountain",
+//     Director: "Ang Lee",
+//     Actors: [
+//     "Jake Gyllenhaal",
+//     "Heath Ledger",
+//     "Anne Hathaway",
+//     "Randy Quaid",
+//     "Michelle Williams",
+//     "Kate Mara",
+//     "David Harbour",
+//     "Linda Cardellini"
+//   ],
+//     Genre: "Drama",
+//   },
+//   {
+//     Title: "Joker",
+//     Director: "Todd Phillips",
+//     Actors: [
+//     "Joaquin Phoenix",
+//     "Robert De Niro",
+//     "Zazie Beetz",
+//     "Brett Cullen",
+//     "Frances Conroy",
+//     "Josh Pais",
+//     "Brian Tyree Henry",
+//     "Sharon Washington"
+//   ],
+//     Genre: ["Drama", "Thriller"],
+//   },
+//   {
+//     Title: "the Social Network",
+//     Director: "David Fincher",
+//     Actors: [
+//     "Jesse Eisenberg",
+//     "Andrew Garfield",
+//     "Justin Timberlake",
+//     "Armie Hammer",
+//     "Rashida Jones",
+//     "Joseph Mazzello",
+//     "Max Minghella",
+//     "Rooney Mara"
+//   ],
+//     Genre: "Drama",
+//   },
+//   {
+//     Title: "Call me by your name",
+//     Director: "Luca Guadagnino",
+//     Actors: [
+//     "Timothée Chalamet",
+//     "Armie Hammer",
+//     "Michael Stuhlbarg",
+//     "Amira Casar",
+//     "Esther Garrel",
+//     "Victoire Du Bois"
+//   ],
+//     Genre: "Drama",
+//   },
+//   {
+//     Title: "Come on Come on",
+//     Director: "Mike Mills",
+//     Actors: [
+//     "Joaquin Phoenix",
+//     "Gaby Hoffmann",
+//     "Woody Norman",
+//     "Scoot McNairy"
+//   ],
+//     Genre: "Drama",
+//   },
+//   {
+//     Title: "Moonlight",
+//     Director: "Barry Jenkins",
+//     Actors: [
+//     "Ashton Sanders",
+//     "Alex R. Hibbert",
+//     "Trevante Rhodes",
+//     "Mahershala Ali",
+//     "Janelle Monáe",
+//     "Naomie Harris"
+//   ],
+//     Genre: "Drama",
+//   },
+//   {
+//     Title: "Dumb & Dumber",
+//     Director: "Peter Farrelly",
+//     Actors: [
+//     "Jim Carrey",
+//     "Jeff Daniels",
+//     "Lauren Holly",
+//     "Karen Duffy"
+//   ],
+//     Genre: "Comedy",
+//   },
+//   {
+//     Title: " 	Ace Ventura: Pet Detective",
+//     Director: "Tom Shadyac",
+//     Actors: [
+//     "Jim Carrey",
+//     "Courteney Cox",
+//     "Sean Young",
+//     "Udo Kier",
+//     "Dan Marino",
+//     "Troy Evans"
+//   ],
+//     Genre: "Comedy",
+//   },
+//   {
+//     Title: "The Lord of the Rings: The Return of the King",
+//     Director: "Peter Jackson",
+//     Actors: [
+//     "Elijah Wood",
+//     "Sean Astin",
+//     "Ian McKellen",
+//     "Andy Serkis",
+//     "Viggo Mortensen",
+//     "Orlando Bloom",
+//     "Miranda Otto",
+//     "Sean Bean",
+//     "Hugo Weaving",
+//     "Christopher Lee",
+//     "Billy Boyd",
+//     "Liv Tyler",
+//     "Dominic Monaghan",
+//     "John Rhys-Davies",
+//     "Karl Urban",
+//     "John Noble",
+//     "Cate Blanchett",
+//     "Ian Holm",
+//     "Bernard Hill",
+//     "David Wenham"
+//   ],
+//     Genre: ["Fantasy", "Fiction", "Fantasy Fiction"],
+//   }
+// ]
+
 app.use(bodyParser.json());
-
-let users = [
-  {
-    id: 1,
-    name: "Kim",
-    favoriteMovies: [],
-  },
-  {
-    id: 2,
-    name: "Joe",
-    favoriteMovies: ["Brokeback Mountain"],
-  },
-]
-
-let movies = [
-  {
-    Title: "Into the wild",
-    Director: "Sean Penn",
-    Actors: [
-    "Emile Hirsch",
-    "Vince Vaughn",
-    "Marcia Gay Harden",
-    "William Hurt",
-    "Jena Malone",
-    "Catherine Keener",
-    "Kristen Stewart",
-    "Hal Holbrook"
-  ],
-    Genre: "Drama",
-  },
-  {
-    Title: "Brokeback Mountain",
-    Director: "Ang Lee",
-    Actors: [
-    "Jake Gyllenhaal",
-    "Heath Ledger",
-    "Anne Hathaway",
-    "Randy Quaid",
-    "Michelle Williams",
-    "Kate Mara",
-    "David Harbour",
-    "Linda Cardellini"
-  ],
-    Genre: "Drama",
-  },
-  {
-    Title: "Joker",
-    Director: "Todd Phillips",
-    Actors: [
-    "Joaquin Phoenix",
-    "Robert De Niro",
-    "Zazie Beetz",
-    "Brett Cullen",
-    "Frances Conroy",
-    "Josh Pais",
-    "Brian Tyree Henry",
-    "Sharon Washington"
-  ],
-    Genre: ["Drama", "Thriller"],
-  },
-  {
-    Title: "the Social Network",
-    Director: "David Fincher",
-    Actors: [
-    "Jesse Eisenberg",
-    "Andrew Garfield",
-    "Justin Timberlake",
-    "Armie Hammer",
-    "Rashida Jones",
-    "Joseph Mazzello",
-    "Max Minghella",
-    "Rooney Mara"
-  ],
-    Genre: "Drama",
-  },
-  {
-    Title: "Call me by your name",
-    Director: "Luca Guadagnino",
-    Actors: [
-    "Timothée Chalamet",
-    "Armie Hammer",
-    "Michael Stuhlbarg",
-    "Amira Casar",
-    "Esther Garrel",
-    "Victoire Du Bois"
-  ],
-    Genre: "Drama",
-  },
-  {
-    Title: "Come on Come on",
-    Director: "Mike Mills",
-    Actors: [
-    "Joaquin Phoenix",
-    "Gaby Hoffmann",
-    "Woody Norman",
-    "Scoot McNairy"
-  ],
-    Genre: "Drama",
-  },
-  {
-    Title: "Moonlight",
-    Director: "Barry Jenkins",
-    Actors: [
-    "Ashton Sanders",
-    "Alex R. Hibbert",
-    "Trevante Rhodes",
-    "Mahershala Ali",
-    "Janelle Monáe",
-    "Naomie Harris"
-  ],
-    Genre: "Drama",
-  },
-  {
-    Title: "Dumb & Dumber",
-    Director: "Peter Farrelly",
-    Actors: [
-    "Jim Carrey",
-    "Jeff Daniels",
-    "Lauren Holly",
-    "Karen Duffy"
-  ],
-    Genre: "Comedy",
-  },
-  {
-    Title: " 	Ace Ventura: Pet Detective",
-    Director: "Tom Shadyac",
-    Actors: [
-    "Jim Carrey",
-    "Courteney Cox",
-    "Sean Young",
-    "Udo Kier",
-    "Dan Marino",
-    "Troy Evans"
-  ],
-    Genre: "Comedy",
-  },
-  {
-    Title: "The Lord of the Rings: The Return of the King",
-    Director: "Peter Jackson",
-    Actors: [
-    "Elijah Wood",
-    "Sean Astin",
-    "Ian McKellen",
-    "Andy Serkis",
-    "Viggo Mortensen",
-    "Orlando Bloom",
-    "Miranda Otto",
-    "Sean Bean",
-    "Hugo Weaving",
-    "Christopher Lee",
-    "Billy Boyd",
-    "Liv Tyler",
-    "Dominic Monaghan",
-    "John Rhys-Davies",
-    "Karl Urban",
-    "John Noble",
-    "Cate Blanchett",
-    "Ian Holm",
-    "Bernard Hill",
-    "David Wenham"
-  ],
-    Genre: ["Fantasy", "Fiction", "Fantasy Fiction"],
-  }
-]
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // logs date and time to the terminal 
 app.use(morgan('common'));
@@ -235,16 +247,31 @@ app.get('/movies/directors/:directorName', (req, res) => {
 
 // CREATE a user
 app.post('/users', (req, res) => {
-  const newUser = req.body; // only readable from the body-parser beeing installed!
-
-  if (newUser.name) {
-    newUser.id = uuid.v4(); //crates an unique id for the user
-    users.push(newUser);  
-    res.status(201).json(newUser);
-    
-  } else {
-    res.status(400).send('users need names');
-  }
+  Users.findOne({ Username: req.body.Username })//check if a user with the username provided by the client already exists (querying “Users” model)
+    .then ((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + 'already exists'); //status if the user already exists
+        //If the user doesn’t exist, you use Mongoose’s create command to “CREATE” the new user, as follows:
+      } else {
+        Users
+          .crreate({ 
+            Username: req.body.Username, //req.body is the request the user sends!
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+          })
+          .then((user) => {res.status(201).json(user)}) //Here, this new document is given the name “user,” + This gives the client feedback on the transaction, letting them know that it’s been completed.
+          //the error-handling function
+          .catch((error) => { 
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        })
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    })
 });
 
 // UPDATE a users name by id
@@ -300,6 +327,11 @@ app.delete('/users/:id', (req, res) => {
   } else {
     res.status(400).send(`${id} couldn't be deleted`);
   }
+});
+
+//finding the movies with the Genres of "Thriller"
+Movies.find({ 'Genre.Name': 'Thriller' }, (err, movies) => {
+  // Logic here
 });
 
 //listens to the localhost:8080
