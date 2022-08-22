@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 let movieSchema = mongoose.Schema({
   Title: {type: String, required: true},
@@ -24,18 +25,17 @@ let userSchema = mongoose.Schema({
   FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
 });
 
-// let genreSchema = mongoose.Schema({
-// });
+//hashing the passwords of the users
+userSchema.statics.hashPassword = (password) => {
+  return bcrypt.hashSync (password, 10);
+};
 
-// let directorSchema = mongoose.Schema({
-// });
+userSchema.methods.validatePassword = function(password) { //Don't use arrow functions when defining instance methods. "functions" will always refer to the object where the function has been called on
+  return bcrypt.compareSync (password, this.Password);
+};
 
 let Movie = mongoose.model('Movie', movieSchema);
 let User = mongoose.model('User', userSchema);
-
-// let Genre = mongoose.model('Genre', genreSchema);
-
-// let Director = mongoose.Schema('Director', directorSchema);
 
 module.exports.Movie = Movie;
 module.exports.User = User;

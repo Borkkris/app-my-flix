@@ -8,11 +8,28 @@ const app = express(); // declares a variable that encapsulates Express’s func
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 
+//express-validator for validation methods
+const {check, validationResult } = require('express-validator');
+
 //refer to the model names I defined in the “models.js” file
 const Movies = Models.Movie;
 const Users = Models.User;
-// const Genres = Models.Genre;
-// const Directors = Models.Director;
+//CORS is a mechanism which aims to allow requests made on behalf of you and at the same time block some requests made by rogue JS and is triggered whenever you are making an HTTP request to: a different domain
+const cors = require('cors');
+//if you want only certain origins to be given access:
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1) {// If a specific origin isn’t found on the list of allowed origins
+      let message = `The CORS policy for this application doesn't allow access from origin`+ origin;
+        return callback(new Error(message), false);
+    }
+    return callback(null, true);
+  }
+}));
+
 //This allows Mongoose to connect to that database (myFlixDB) so it can perform CRUD operations on the documents it contains from within my REST API
 mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -26,24 +43,25 @@ require('./passport');
 // logs date and time to the terminal 
 app.use(morgan('common'));
 
+//the following code serves the html file in a directory named "public" (GET)
 app.use('/documentation.html', express.static('public'));
 
-// READ and sends the home URL to the browser
+// READ and sends the home URL to the browser with a message (GET)
 app.get('/', (req, res) => {
   res.send('Welcome to myFlix app!');
 });
 
-// requests and sends the secreturl URL to the browser
+// requests and sends the secreturl URL to the browser with a message (GET)
 app.get('/secreturl', (req, res) => {
   res.send('This is a secret url with super top-secret content.');
 });
 
-// READ the API documentation Page
+// READ the API documentation Page (GET)
 app.get('/documentation', (req, res) => {
     res.sendFile('public/documentation.html', { root: __dirname });
 });
 
-// READ the list of all movies
+// READ the list of all movies (GET)
 app.get('/movies', passport.authenticate('jwt', { session: false}), (req, res) => {
   Movies.find()
     .then((movie) => {
@@ -55,7 +73,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false}), (req, res) =
     });
 });
 
-// READ the movie by title
+// READ the movie by title (GET)
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req, res) => {
   Movies.findOne({ 'Title': req.params.Title })
     .then((movie) => {
@@ -67,7 +85,7 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req,
     });
 });
 
-// READ the Genre by Name
+// READ the Genre by Name (GET)
 app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: false}), (req, res) => {
   Movies.findOne({ 'Genre.Name': req.params.genreName})
     .then((movie) => {
@@ -79,7 +97,7 @@ app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: fals
     });
 });
 
-// READ the Director by name
+// READ the Director by name (GET)
 app.get('/movies/directors/:directorName', passport.authenticate('jwt', { session: false}), (req, res) => {
   Movies.findOne({ 'Director.Name': req.params.directorName})
     .then((movie) => {
@@ -91,7 +109,7 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
     });
 });
 
-//Get all users
+//Get all users (GET)
 app.get('/users', passport.authenticate('jwt', { session: false}), (req, res) => {
   Users.find()
     .then((users) => {
@@ -103,7 +121,7 @@ app.get('/users', passport.authenticate('jwt', { session: false}), (req, res) =>
     });
 });
 
-// Get a user by username
+// Get a user by username (GET)
 app.get('/users/:Username', passport.authenticate('jwt', { session: false}), (req, res) => {
   Users.findOne({ Username: req.params.Username })//querying a specific user by their username, you need to pass, as a parameter, an object that contains the criteria 
     .then((user) => {//After the document is created, I then send a response back to the client with the user data (document) that was just read
@@ -115,17 +133,32 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false}), (re
     });
 });
 
-// CREATE a user
-app.post('/users', (req, res) => {
-  Users.findOne({ Username: req.body.Username })
+// CREATE a user (POST)
+app.post('/users',
+[
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+  ], (req, res) => {
+
+  // check the validation object for errors
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  let hashedPassword = Users.hashPassword(req.body.Password);
+  Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
     .then((user) => {
       if (user) {
-        return res.status(400).send(req.body.Username + 'already exists');
+        return res.status(400).send(req.body.Username + 'already exists'); //If the user is found, send a response that it already exists
       } else {
         Users
           .create({
             Username: req.body.Username,
-            Password: req.body.Password,
+            Password: hashedPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday
           })
@@ -144,7 +177,7 @@ app.post('/users', (req, res) => {
     });
 });
 
-// Update a user's info, by username
+// Update a user's info, by username (PUT)
 app.put('/users/:Username', passport.authenticate('jwt', { session: false}), (req, res) => {
   Users.findOneAndUpdate ({ Username: req.params.Username //avoid findOneAndUpdate???
 }, { $set: // fields in the user document I'am updating
@@ -166,8 +199,8 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false}), (re
   });
 });
 
-// Add a movie to a user's list of favorites
-app.post('/user/:Username/movies/:movieID', passport.authenticate('jwt', { session: false}), (req,res) => {
+// Add a movie to a user's list of favorites (POST)
+app.post('/users/:Username/movies/:movieID', passport.authenticate('jwt', { session: false}), (req,res) => {
   Users.findOneAndUpdate ({ Username: req.params.Username}, //avoid findOneAndUpdate???
     {
       $push: { FavoriteMovies: req.params.movieID },
@@ -183,7 +216,7 @@ app.post('/user/:Username/movies/:movieID', passport.authenticate('jwt', { sessi
     });
 });
 
-// DELETE remove a movie from favourites
+// REMOVE remove a movie from favourites (DELETE)
 app.delete('/users/:Username/movies/:movieID', passport.authenticate('jwt', { session: false}), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, //avoid findOneAndUpdate???
     { 
@@ -200,7 +233,7 @@ app.delete('/users/:Username/movies/:movieID', passport.authenticate('jwt', { se
   });
 });
 
-// Delete a user by username
+// REMOVE a user by username (DELETE)
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false}), (req, res) => {
   Users.findOneAndRemove({ Username: req.params.Username }) //avoid findOneAndRemove???
     .then((user) => {
@@ -216,9 +249,9 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false}), 
     });
 });
 
-//listens to the localhost:8080
-app.listen(8080, () => {
-  console.log('Your app is listening on port 8080.');
+const port = process.env.PORT || 8080
+app.listen(port,'0.0.0.0',() => {
+  console.log('Your app is listening on Port ' + port);
 });
 
 // everytime an error in my code occurs it shows this console.log
