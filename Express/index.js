@@ -14,6 +14,7 @@ const {check, validationResult } = require('express-validator');
 //refer to the model names I defined in the “models.js” file
 const Movies = Models.Movie;
 const Users = Models.User;
+
 //CORS is a mechanism which aims to allow requests made on behalf of you and at the same time block some requests made by rogue JS and is triggered whenever you are making an HTTP request to: a different domain
 const cors = require('cors');
 //if you want only certain origins to be given access:
