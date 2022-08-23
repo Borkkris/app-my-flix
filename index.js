@@ -17,19 +17,22 @@ const Users = Models.User;
 
 //CORS is a mechanism which aims to allow requests made on behalf of you and at the same time block some requests made by rogue JS and is triggered whenever you are making an HTTP request to: a different domain
 const cors = require('cors');
-//if you want only certain origins to be given access:
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1) {// If a specific origin isn’t found on the list of allowed origins
-      let message = `The CORS policy for this application doesn't allow access from origin`+ origin;
-        return callback(new Error(message), false); 
-    }
-    return callback(null, true);
-  }
-}));
+// Configure Allowed Domains for Cross-Origin Resource Sharing (CORS)
+// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+app.use(cors()); // CORS Option 1: Allow all domains
+
+// app.use(cors({ // CORS Option 2: Only allow specific domains (see the variable: allowedOrigins)
+//   origin: (origin, callback) => {
+//     if(!origin) return callback(null, true);
+//     if(allowedOrigins.indexOf(origin) === -1) {// If a specific origin isn’t found on the list of allowed origins
+//       let message = `The CORS policy for this application doesn't allow access from origin`+ origin;
+//         return callback(new Error(message), false); 
+//     }
+//     return callback(null, true);
+//   }
+// }));
 
 //This allows Mongoose to connect to that database (myFlixDB) so it can perform CRUD operations on the documents it contains from within my REST API
 //local adress
@@ -182,7 +185,21 @@ app.post('/users',
 });
 
 // Update a user's info, by username (PUT)
-app.put('/users/:Username', passport.authenticate('jwt', { session: false}), (req, res) => {
+app.put('/users/:Username',
+
+  [
+    check('Username', 'Username is required').isLength({ min: 5 }),
+    check('Username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail(),
+  ],
+
+ passport.authenticate('jwt', { session: false}), 
+ (req, res) => {
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
   Users.findOneAndUpdate ({ Username: req.params.Username //avoid findOneAndUpdate???
 }, { $set: // fields in the user document I'am updating
     { 
