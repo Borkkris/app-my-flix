@@ -26,12 +26,12 @@ update their personal information, and create a list of their favorite movies.
 * Heroku
 
 ## Repository-link:
-[myFlix App](https://github.com/Borkkris/app-my-flix)
+[myFlix App-Repo](https://github.com/Borkkris/app-my-flix)
 
 ## Datenbank online on MongoDB Atlas
 
 ## Link:
-https://git.heroku.com/app-my-flix.git
+[myFlix_App](https://app-my-flix.herokuapp.com)
 
 ## Contact:
 Christian Bork: christianbork.private@gmail.com
