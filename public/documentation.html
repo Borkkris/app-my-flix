@@ -35,6 +35,34 @@
     <th>Response body data format</th>
   </tr>
 
+    <tr>
+    <td>User Login</td> 
+    <td>/login</td>
+    <td>POST</td>
+    <td><p>JSON object with User data <br><br><span class="required">Required</span>:"Username" "Password" "Email" Birthdate"</p>
+    <h4>Example:</h4>
+    <code class="code">
+      {<br>
+        "Username": "Mary",<br>
+        "Password": "test1234",<br><br>
+        "Email": "Mary@gmail.com",<br>
+        "Birthday": "1990-10-12"<br>
+      }<br>
+    </code></td> 
+    <td><p>JSON object with data about user which includes all informations and the updated value.</p>
+        <h4>Example:</h4>
+        <code class="code">
+          {<br>
+            "Username": "Mary",<br>
+            "Password": "1234", (updated Password!)<br>
+            "Email": "Mary@gmail.com",<br>
+            "Birthday": "1990-10-12"<br>
+          }<br>
+        </code>
+    <p><strong>Response status codes:</strong></p>
+        <p>400: Bad Request</p></td>
+  </tr>
+
   <tr>
     <td>Return a list of ALL movies to the user</td>
     <td>/movies</td> 
@@ -101,7 +129,6 @@
           }<br>
         </code>
     <p><strong>Response status codes:</strong></p>
-        <p>201: OK- JSON object</p>
         <p>500: Internal server error- Something went wrong</p>
     </td>
   </tr>
@@ -120,7 +147,6 @@
         } <br>
         </code>
     <p><strong>Response status codes:</strong></p>
-        <p>201: OK- JSON object</p>
         <p>500: Internal server error- Something went wrong</p></td> 
   </tr>
 
@@ -148,14 +174,14 @@
     <td>Allow new users to register </td>
     <td>/users</td> 
     <td>POST</td>
-    <td><p>JSON object with data about user. <span class="required">Required</span>: "Username"</p>
+    <td><p>JSON object with data about user. <br> <br> <span class="required">Required</span>: "Username"</p>
     <h4>Example:</h4>
     <code class="code">
       {<br>
         "Username": "Mary",<br>
         "Password": "test1234",<br>
         "Email": "Mary@gmail.com",<br>
-        "Birthday": "01/01/1990"<br>
+        "Birthday": "1990-10-12"<br>
       }<br>
     </code></td> 
     <td><p>An object containing data about specific director. Every key is described with value of a string.</p>
@@ -180,14 +206,14 @@
     <td>Allow users to update their user info (username, password, email, date of birth) by Username</td> 
     <td>/users/:Username</td>
     <td>PUT</td>
-    <td><p>JSON object with data about user and the changed value. (i.e. Password) <span class="required">Required</span>: "Username"</p>
+    <td><p>JSON object with data about user and the changed value. (i.e. Password) <br> <br><span class="required">Required</span>: "Username"</p>
     <h4>Example:</h4>
     <code class="code">
       {<br>
         "Username": "Mary",<br>
         "Password": "test1234", (changed to "1234"!)<br><br>
         "Email": "Mary@gmail.com",<br>
-        "Birthday": "01/01/1990"<br>
+        "Birthday": "1990-10-12"<br>
       }<br>
     </code></td> 
     <td><p>JSON object with data about user which includes all informations and the updated value.</p>
@@ -197,7 +223,7 @@
             "Username": "Mary",<br>
             "Password": "1234", (updated Password!)<br>
             "Email": "Mary@gmail.com",<br>
-            "Birthday": "01/01/1990"<br>
+            "Birthday": "1990-10-12"<br>
           }<br>
         </code>
     <p><strong>Response status codes:</strong></p>
@@ -216,6 +242,7 @@
     ],<br> (i.e. this MovieID belongs to the Movie "Joker")
         </code>
     <p><strong>Response status codes:</strong></p>
+        <p>201: OK- JSON object</p>
         <p>500: Internal server error- Something went wrong</p>
   </div></td>
   </tr>

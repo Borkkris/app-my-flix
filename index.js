@@ -18,6 +18,10 @@ const Users = Models.User;
 //CORS is a mechanism which aims to allow requests made on behalf of you and at the same time block some requests made by rogue JS and is triggered whenever you are making an HTTP request to: a different domain
 const cors = require('cors');
 
+require('./auth')(app); // the app argument ensures that Express is available in my “auth.js” file as well.
+const passport = require('passport');
+require('./passport');
+
 // Configure Allowed Domains for Cross-Origin Resource Sharing (CORS)
 // let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
@@ -36,22 +40,15 @@ app.use(cors()); // CORS Option 1: Allow all domains
 
 //This allows Mongoose to connect to that database (myFlixDB) so it can perform CRUD operations on the documents it contains from within my REST API
 //local adress
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); 
+mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); 
 //link (online)
-mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-let auth = require('./auth')(app); // the app argument ensures that Express is available in my “auth.js” file as well.
-const passport = require('passport');
-require('./passport');
-
 // logs date and time to the terminal 
 app.use(morgan('common'));
-
-//the following code serves the html file in a directory named "public" (GET)
-app.use('/documentation.html', express.static('public'));
 
 // READ and sends the home URL to the browser with a message (GET)
 app.get('/', (req, res) => {
@@ -72,7 +69,7 @@ app.get('/documentation', (req, res) => {
 app.get('/movies', passport.authenticate('jwt', { session: false}), (req, res) => {
   Movies.find()
     .then((movie) => {
-      res.status(201).json(movie);
+      res.status(200).json(movie);
     })
     .catch((err) => {
       console.error(err);
@@ -120,7 +117,7 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
 app.get('/users', passport.authenticate('jwt', { session: false}), (req, res) => {
   Users.find()
     .then((users) => {
-      res.status(201).json(users);
+      res.status(200).json(users);
     })
     .catch((err) => {
       console.error(err);
@@ -150,7 +147,7 @@ app.post('/users',
   ], (req, res) => {
 
   // check the validation object for errors
-  let errors = validationResult(req);
+  const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
