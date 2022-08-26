@@ -11,7 +11,13 @@ update their personal information, and create a list of their favorite movies.
 * HTML5
 * CSS3
 * vanilla JS
+* Express.js
+* passport
 * MongoDB
+
+##Authentication, Authorization
+* jsonwebtoken
+* HTTP Authentication
 
 ### tested in:
 * Postman
