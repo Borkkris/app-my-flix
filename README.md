@@ -16,7 +16,7 @@ update their personal information, and create a list of their favorite movies.
 * MongoDB
 
 ##Authentication, Authorization
-* jsonwebtoken
+* JWT
 * HTTP Authentication
 
 ### tested in:
@@ -26,12 +26,13 @@ update their personal information, and create a list of their favorite movies.
 * Heroku
 
 ## Repository-link:
-[myFlix App-Repo](https://github.com/Borkkris/app-my-flix)
+[myFlix App - Repository](https://github.com/Borkkris/app-my-flix)
 
-## Datenbank online on MongoDB Atlas
+## Datenbank online on 
+* MongoDB Atlas
 
 ## Link:
-[myFlix_App](https://app-my-flix.herokuapp.com)
+[myFlix App](https://app-my-flix.herokuapp.com)
 
 ## Contact:
 Christian Bork: christianbork.private@gmail.com
