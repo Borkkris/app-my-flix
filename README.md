@@ -8,28 +8,28 @@ about different movies, directors, and genres. Users will be able to sign up,
 update their personal information, and create a list of their favorite movies.
 
 ## Built with:
-* HTML5
-* CSS3
-* vanilla JS
-* Express.js
-* passport
-* MongoDB
+* <code>HTML5</code>
+* <code>CSS3</code>
+* <code>vanilla JS</code>
+* <code>Express.js</code>
+* <code>passport</code>
+* <code>MongoDB</code>
 
 ##Authentication, Authorization
-* JWT
-* HTTP Authentication
+* <code>JWT</code>
+* <code>HTTP Authentication</code>
 
 ### tested in:
-* Postman
+* <code>Postman</code>
 
 ### deployed with:
-* Heroku
+* <code>Heroku</code>
 
 ## Repository-link:
 [myFlix App - Repository](https://github.com/Borkkris/app-my-flix)
 
 ## Datenbank online on 
-* MongoDB Atlas
+* <code>MongoDB Atlas</code>
 
 ## Link:
 [myFlix App](https://app-my-flix.herokuapp.com)
