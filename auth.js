@@ -21,7 +21,7 @@ module.exports = (router) => {
             if (error || !user) { //if an error occures or this user is unknown -> show the error message
                 return res.status(400).json({
                     message: 'Something is not right',
-                    user: user //MENTOR: what does this line mean?
+                    user: user
                 });
             }
             req.login(user, { session: false }, (error) => {
