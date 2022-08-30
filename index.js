@@ -3,6 +3,7 @@ const express = require('express'); //imports the express module locally so it c
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const uuid = require('uuid');
+const pathToSwaggerUi = require('swagger-ui-dist').absolutePath()
 
 const app = express(); // declares a variable that encapsulates Express’s functionality to configure my web server. This new variable is what I will use to route my HTTP requests and responses.
 const mongoose = require('mongoose');
@@ -11,8 +12,7 @@ const Models = require('./models.js');
 //express-validator for validation methods
 const {check, validationResult } = require('express-validator');
 
-//refer to the model names I defined in the “models.js” file
-const Movies = Models.Movie;
+
 const Users = Models.User;
 
 //CORS is a mechanism which aims to allow requests made on behalf of you and at the same time block some requests made by rogue JS and is triggered whenever you are making an HTTP request to: a different domain
@@ -22,10 +22,15 @@ require('./auth')(app); // the app argument ensures that Express is available in
 const passport = require('passport');
 require('./passport');
 
+// routes
+const movieRoutes = require('./routes/movies')
+
 // Configure Allowed Domains for Cross-Origin Resource Sharing (CORS)
 // let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234'];
 
 app.use(cors()); // CORS Option 1: Allow all domains
+
+app.use(express.static(pathToSwaggerUi))
 
 // app.use(cors({ // CORS Option 2: Only allow specific domains (see the variable: allowedOrigins)
 //   origin: (origin, callback) => {
@@ -40,7 +45,7 @@ app.use(cors()); // CORS Option 1: Allow all domains
 
 //This allows Mongoose to connect to that database (myFlixDB) so it can perform CRUD operations on the documents it contains from within my REST API
 //local adress
-//mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); 
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); 
 //link (online)
 mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -65,53 +70,7 @@ app.get('/documentation', (req, res) => {
     res.sendFile('public/documentation.html', { root: __dirname });
 });
 
-// READ the list of all movies (GET)
-app.get('/movies', /*passport.authenticate('jwt', { session: false}),*/ function (req, res) {
-  Movies.find()
-    .then(function (movies) {
-      res.status(201).json(movies);
-    })
-    .catch(function (error) {
-      console.error(error);
-      res.status(500).send("Error: " + error);
-    });
-});
-
-// READ the movie by title (GET)
-app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req, res) => {
-  Movies.findOne({ 'Title': req.params.Title })
-    .then((movie) => {
-      res.json(movie);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error ' + err);
-    });
-});
-
-// READ the Genre by Name (GET)
-app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: false}), (req, res) => {
-  Movies.findOne({ 'Genre.Name': req.params.genreName})
-    .then((movie) => {
-      res.json(movie.Genre);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error ' + err);
-    });
-});
-
-// READ the Director by name (GET)
-app.get('/movies/directors/:directorName', passport.authenticate('jwt', { session: false}), (req, res) => {
-  Movies.findOne({ 'Director.Name': req.params.directorName})
-    .then((movie) => {
-      res.json(movie.Director);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error ' + err);
-    });
-});
+app.use('/movies', movieRoutes)
 
 //Get all users (GET)
 app.get('/users', passport.authenticate('jwt', { session: false}), (req, res) => {
