@@ -3,7 +3,7 @@ const express = require('express'); //imports the express module locally so it c
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const uuid = require('uuid');
-const pathToSwaggerUi = require('swagger-ui-dist').absolutePath()
+// const pathToSwaggerUi = require('swagger-ui-dist').absolutePath()
 
 const app = express(); // declares a variable that encapsulates Express’s functionality to configure my web server. This new variable is what I will use to route my HTTP requests and responses.
 const mongoose = require('mongoose');
@@ -30,7 +30,8 @@ const movieRoutes = require('./routes/movies')
 
 app.use(cors()); // CORS Option 1: Allow all domains
 
-app.use(express.static(pathToSwaggerUi))
+//for documentation
+// app.use(express.static(pathToSwaggerUi))
 
 // app.use(cors({ // CORS Option 2: Only allow specific domains (see the variable: allowedOrigins)
 //   origin: (origin, callback) => {
