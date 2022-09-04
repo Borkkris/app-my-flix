@@ -7,7 +7,7 @@ const Models = require('../models');
 const Movies = Models.Movie;
 
 // READ the list of all movies (GET)
-router.get('/', /*passport.authenticate('jwt', { session: false}),*/ function (req, res) {
+router.get('/', passport.authenticate('jwt', { session: false}), function (req, res) {
   Movies.find()
     .then(function (movies) {
       res.status(201).json(movies);
