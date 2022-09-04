@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 // const {check, validationResult } = require('express-validator');
 
 //CORS is a mechanism which aims to allow requests made on behalf of you and at the same time block some requests made by rogue JS and is triggered whenever you are making an HTTP request to: a different domain
-// const cors = require('cors');
+const cors = require('cors');
 
 require('./auth')(app); // the app argument ensures that Express is available in my “auth.js” file as well.
 const passport = require('passport');
@@ -43,9 +43,10 @@ app.use(cors()); // CORS Option 1: Allow all domains
 // }));
 
 //This allows Mongoose to connect to that database (myFlixDB) so it can perform CRUD operations on the documents it contains from within my REST API
-//local adress
+//local adress:
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); 
-//link (online)
+
+//link (online):
 mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(bodyParser.json());
