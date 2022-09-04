@@ -7,7 +7,7 @@ const uuid = require('uuid');
 
 const app = express(); // declares a variable that encapsulates Express’s functionality to configure my web server. This new variable is what I will use to route my HTTP requests and responses.
 const mongoose = require('mongoose');
-const Models = require('./models.js');
+// const Models = require('./models.js');
 
 //express-validator for validation methods
 // const {check, validationResult } = require('express-validator');
@@ -16,7 +16,7 @@ const Models = require('./models.js');
 const cors = require('cors');
 
 require('./auth')(app); // the app argument ensures that Express is available in my “auth.js” file as well.
-// const passport = require('passport');
+const passport = require('passport');
 require('./passport');
 
 // routes
