@@ -24,30 +24,30 @@ const movieRoutes = require('./routes/movies');
 const userRoutes = require('./routes/users');
 
 // Configure Allowed Domains for Cross-Origin Resource Sharing (CORS)
-// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234'];
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234'];
 
-app.use(cors()); // CORS Option 1: Allow all domains
+// app.use(cors()); // CORS Option 1: Allow all domains
 
 // for documentation
 // app.use(express.static(pathToSwaggerUi))
 
-// app.use(cors({ // CORS Option 2: Only allow specific domains (see the variable: allowedOrigins)
-//   origin: (origin, callback) => {
-//     if(!origin) return callback(null, true);
-//     if(allowedOrigins.indexOf(origin) === -1) {// If a specific origin isn’t found on the list of allowed origins
-//       let message = `The CORS policy for this application doesn't allow access from origin`+ origin;
-//         return callback(new Error(message), false); 
-//     }
-//     return callback(null, true);
-//   }
-// }));
+app.use(cors({ // CORS Option 2: Only allow specific domains (see the variable: allowedOrigins)
+  origin: (origin, callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1) {// If a specific origin isn’t found on the list of allowed origins
+      let message = `The CORS policy for this application doesn't allow access from origin`+ origin;
+        return callback(new Error(message), false); 
+    }
+    return callback(null, true);
+  }
+}));
 
 // This allows Mongoose to connect to that database (myFlixDB) so it can perform CRUD operations on the documents it contains from within my REST API
 // local adress:
-mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); 
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); 
 
 //link (online):
-// mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });// URL with my password and DB
+mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });// URL with my password and DB
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
