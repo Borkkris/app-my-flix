@@ -49,10 +49,10 @@ app.all('/', function (req, res, next) {
 
 // This allows Mongoose to connect to that database (myFlixDB) so it can perform CRUD operations on the documents it contains from within my REST API
 // local adress:
-mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); 
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true }); 
 
 //link (online):
-// mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });// URL with my password and DB
+mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });// URL with my password and DB
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
