@@ -15,6 +15,8 @@ const mongoose = require('mongoose');
 //CORS is a mechanism which aims to allow requests made on behalf of you and at the same time block some requests made by rogue JS and is triggered whenever you are making an HTTP request to: a different domain
 const cors = require('cors');
 
+app.use(cors()); // CORS Option 1: Allow all domains
+
 require('./auth')(app); // the app argument ensures that Express is available in my “auth.js” file as well.
 const passport = require('passport');
 require('./passport');
@@ -25,8 +27,6 @@ const userRoutes = require('./routes/users');
 
 // Configure Allowed Domains for Cross-Origin Resource Sharing (CORS)
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234'];
-
-app.use(cors()); // CORS Option 1: Allow all domains
 
 // for documentation
 // app.use(express.static(pathToSwaggerUi))
