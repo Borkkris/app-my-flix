@@ -30,7 +30,7 @@ const movieRoutes = require('./routes/movies');
 const userRoutes = require('./routes/users');
 
 // Configure Allowed Domains for Cross-Origin Resource Sharing (CORS)
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234'];
+// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234'];
 
 // for documentation
 // app.use(express.static(pathToSwaggerUi))
