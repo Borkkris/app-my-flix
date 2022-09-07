@@ -17,6 +17,10 @@ const cors = require('cors');
 
 app.use(cors()); // CORS Option 1: Allow all domains
 
+// reading req.body
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 require('./auth')(app); // the app argument ensures that Express is available in my “auth.js” file as well.
 const passport = require('passport');
 require('./passport');
@@ -54,9 +58,6 @@ app.all('/', function (req, res, next) {
 
 //link (online) /URL with my password and DB:
 mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // logs date and time to the terminal 
 app.use(morgan('common'));
