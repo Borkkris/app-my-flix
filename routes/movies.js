@@ -31,7 +31,7 @@ router.get('/:Title', passport.authenticate('jwt', { session: false}), (req, res
 });
 
 // READ the Genre by Name (GET)
-router.get('/genre/:genreName', passport.authenticate('jwt', { session: false}), (req, res) => {
+router.get('/genres/:genreName', passport.authenticate('jwt', { session: false}), (req, res) => {
   Movies.findOne({ 'Genre.Name': req.params.genreName})
     .then((movie) => {
       res.json(movie.Genre);
