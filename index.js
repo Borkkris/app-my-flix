@@ -14,8 +14,21 @@ const mongoose = require('mongoose');
 
 //CORS is a mechanism which aims to allow requests made on behalf of you and at the same time block some requests made by rogue JS and is triggered whenever you are making an HTTP request to: a different domain
 const cors = require('cors');
+// Configure Allowed Domains for Cross-Origin Resource Sharing (CORS)
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', 'https://app-my-flix.netlify.app'];
 
-app.use(cors()); // CORS Option 1: Allow all domains
+app.use(cors({ // CORS Option 2: Only allow specific domains (see the variable: allowedOrigins)
+  origin: (origin, callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1) {// If a specific origin isn’t found on the list of allowed origins
+      let message = `The CORS policy for this application doesn't allow access from origin`+ origin;
+        return callback(new Error(message), false); 
+    }
+    return callback(null, true);
+  }
+}));
+
+// app.use(cors()); // CORS Option 1: Allow all domains
 
 // reading req.body
 app.use(bodyParser.json());
@@ -29,22 +42,10 @@ require('./passport');
 const movieRoutes = require('./routes/movies');
 const userRoutes = require('./routes/users');
 
-// Configure Allowed Domains for Cross-Origin Resource Sharing (CORS)
-// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234'];
-
 // for documentation
 // app.use(express.static(pathToSwaggerUi))
 
-// app.use(cors({ // CORS Option 2: Only allow specific domains (see the variable: allowedOrigins)
-//   origin: (origin, callback) => {
-//     if(!origin) return callback(null, true);
-//     if(allowedOrigins.indexOf(origin) === -1) {// If a specific origin isn’t found on the list of allowed origins
-//       let message = `The CORS policy for this application doesn't allow access from origin`+ origin;
-//         return callback(new Error(message), false); 
-//     }
-//     return callback(null, true);
-//   }
-// }));
+
 
 app.all('/', function (req, res, next) { 
   res.header("Access-Control-Allow-Origin", "*"); 
