@@ -27,8 +27,8 @@ app.use(cors({ // CORS Option 2: Only allow specific domains (see the variable: 
     return callback(null, true);
   }
 }));
-
-// app.use(cors()); // CORS Option 1: Allow all domains
+// CORS Option 1: Allow all domains
+// app.use(cors()); 
 
 // reading req.body
 app.use(bodyParser.json());
