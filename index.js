@@ -15,7 +15,7 @@ const mongoose = require('mongoose');
 //CORS is a mechanism which aims to allow requests made on behalf of you and at the same time block some requests made by rogue JS and is triggered whenever you are making an HTTP request to: a different domain
 const cors = require('cors');
 // Configure Allowed Domains for Cross-Origin Resource Sharing (CORS)
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', 'https://app-my-flix.netlify.app', 'https://git.heroku.com/app-my-flix.git'];
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', 'https://app-my-flix.netlify.app', 'https://git.heroku.com/app-my-flix.git', 'https://app-my-flix.herokuapp.com'];
 
 app.use(cors({ // CORS Option 2: Only allow specific domains (see the variable: allowedOrigins)
   origin: (origin, callback) => {
