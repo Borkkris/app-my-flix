@@ -28,7 +28,7 @@ update their personal information, and create a list of their favorite movies.
 ## Repository-link:
 [myFlix App - Repository](https://github.com/Borkkris/app-my-flix)
 
-## Datenbank online on 
+## Database online on 
 * <code>MongoDB Atlas</code>
 
 ## Link:
