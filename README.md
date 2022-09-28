@@ -15,7 +15,7 @@ update their personal information, and create a list of their favorite movies.
 * <code>passport</code>
 * <code>MongoDB</code>
 
-##Authentication, Authorization
+## Authentication, Authorization
 * <code>JWT</code>
 * <code>HTTP Authentication</code>
 
