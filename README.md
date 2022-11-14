@@ -1,4 +1,4 @@
-# myFlix-App
+# myFlix-App (API)
 
 ## info
 This is my myFlix-App I created as a fellow for CareerFoundry.
