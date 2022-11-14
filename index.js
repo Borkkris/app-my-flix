@@ -42,11 +42,6 @@ require('./passport');
 const movieRoutes = require('./routes/movies');
 const userRoutes = require('./routes/users');
 
-// for documentation
-// app.use(express.static(pathToSwaggerUi))
-
-
-
 app.all('/', function (req, res, next) { 
   res.header("Access-Control-Allow-Origin", "*"); 
   res.setHeader("Access-Control-Allow-Credentials", "true"); 
