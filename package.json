@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "doc": "jsdoc -c jsdoc.conf.json"
   },
   "repository": {
     "type": "git",
@@ -31,11 +32,10 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "swagger-ui": "^4.14.0",
-    "swagger-ui-dist": "^4.14.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "jsdoc": "^4.0.0",
     "nodemon": "^2.0.19"
   }
 }
