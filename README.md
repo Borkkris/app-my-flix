@@ -1,7 +1,7 @@
 # myFlix-App (API)
 
 ## info
-This is my myFlix-App I created as a fellow for CareerFoundry.
+This is my myFlix-API I created as a fellow for CareerFoundry.
 It is a “movies” web application. 
 The web application will provide users with access to information 
 about different movies, directors, and genres. Users will be able to sign up, 
